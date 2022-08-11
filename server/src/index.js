@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require("cors");
+const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const InitMongoose = require('../InitMongoose');
 require('dotenv').config();
@@ -14,6 +15,19 @@ InitMongoose(mongoose);
 app.use(morgan('common'));
 app.use(helmet());
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Authorization, Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+  res.header("Allow", "GET, POST, OPTIONS, PUT, DELETE");
+  next();
+});
+
+app.use(bodyParser.json());
 app.use(express.json());
 
 //api routes
