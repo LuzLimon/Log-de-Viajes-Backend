@@ -4,13 +4,13 @@ const helmet = require('helmet');
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
-const InitMongoose = require('../InitMongoose');
+
 require('dotenv').config();
 
 const middlewares = require('./middlewares');
 
 const app = express();
-InitMongoose(mongoose);
+
 
 app.use(morgan('common'));
 app.use(helmet());
@@ -37,6 +37,17 @@ app.use('/api/categorie', require('./api/categorie'));
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
+
+const mongoUri = process.env.DATABASE_URL;
+
+mongoose
+  .connect(mongoUri)
+  .then(() => {
+    console.log("connected to mongo");
+  })
+  .catch((error) => {
+    console.log({ error });
+  });
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
