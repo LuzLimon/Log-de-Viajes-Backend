@@ -23,6 +23,7 @@ app.use(express.json());
 //api routes
 app.use('/api/logs', require('./api/logs'));
 app.use(require('./api/userRoutes'));
+app.use('/api/categorie', require('./api/categorie'));
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
